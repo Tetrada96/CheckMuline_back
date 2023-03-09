@@ -3,17 +3,17 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('Users', [
+    return queryInterface.bulkInsert('users', [
       {
         login: 'admin',
         password: 'admin',
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
     ])
   },
 
   async down (queryInterface, Sequelize) {
-    queryInterface.bulkDelete('Users', null, {})
+    queryInterface.bulkDelete('users', null, {})
   }
 };

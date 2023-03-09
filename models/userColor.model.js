@@ -5,7 +5,7 @@ module.exports = (sequelize, Sequelize) => {
       defaultValue: 0,
       notNull: true, 
     },
-  }, {timestamps: false});
+  }, {timestamps: false,underscored: true});
 
   return User_Color;
 };

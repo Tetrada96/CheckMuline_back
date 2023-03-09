@@ -21,7 +21,9 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'User',
+    modelName: 'users',
+    tableName: 'users',
+    underscored: true,
     hooks: {
       beforeCreate: async (user) => {
        if (user.password) {

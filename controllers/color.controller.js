@@ -6,12 +6,12 @@ const Op = db.Sequelize.Op;
 
 const findColors = async (userId) => {
   return User.findOne({where: {id: userId},include: {model: Color}}).then(user => {
-    return user.Colors.map(color => {return {
+    return user.colors.map(color => {return {
       "id": color.id,
       "color": color.color,
-      "nameColorEng": color.nameColorEng,
-      "DMC": color.DMC,
-      "nameColorRu": color.nameColorRu,
+      "name_color_eng": color.name_color_eng,
+      "dmc": color.dmc,
+      "name_color_ru": color.name_color_ru,
       "count": color.user_color.count
       }});
 })}
@@ -29,14 +29,14 @@ exports.findAll = async function (req, res) {
 
 exports.changeColorCount = async (req, res) => {
   const userId = req.params.userId;
-  const colorDMC = req.params.colorId;
+  const colordmc = req.params.colorId;
   const newCount = req.body.count;
   const user = await User.findByPk(userId);
   if (!user) {
     res.status(404).send('Пользователь не найден');
   return }
-  Color.findOne({where: {DMC: colorDMC}}).then(color => {
-    UserColor.update({count: newCount},{where: {[Op.and]: [{UserId: userId, ColorId:color.id}]}}).then(() => {
+  Color.findOne({where: {dmc: colordmc}}).then(color => {
+    UserColor.update({count: newCount},{where: {[Op.and]: [{user_id: userId, color_id:color.id}]}}).then(() => {
       res.send()
      })
     .catch(() => res.status(404).send('Not Update Color'))
@@ -47,10 +47,10 @@ exports.changeColorCount = async (req, res) => {
 
 exports.checkColors = async (req, res) => {
   const userId = req.params.userId;
-  const colorDMC = req.body.colors;
+  const colordmc = req.body.colors;
   try{
     let colorsWithCount = await findColors(userId)
-    let ar = colorDMC.map((colorReq) => colorsWithCount.map(c => c.DMC).includes(colorReq) ? colorsWithCount.find(cwc => cwc.DMC === colorReq) : {DMC: colorReq, error: 'Такого цвета нет'})
+    let ar = colordmc.map((colorReq) => colorsWithCount.map(c => c.dmc).includes(colorReq) ? colorsWithCount.find(cwc => cwc.dmc === colorReq) : {dmc: colorReq, error: 'Такого цвета нет'})
     res.send(ar)
   }
   catch(e) {

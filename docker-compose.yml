@@ -1,10 +1,43 @@
 version: "3.9"
+
+# networks:
+#   proxy:
+#     name: proxy
+
 services:
   postgres:
-    image: postgres:13.3
+    image: postgres:15
+    # networks:
+    #   - proxy
     environment:
       POSTGRES_DB: "habrdb"
       POSTGRES_USER: "habrpguser"
       POSTGRES_PASSWORD: "pgpwd4habr"
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U habrpguser -d habrdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      # copy the sql script to create tables
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+
+  app:
+    image: node
+    # networks:
+    #   - proxy
+    restart: always
+    build:
+      context: .
+    environment:
+      #   DB_SCHEMA: postgres
+      DB_USER: habrpguser
+      DB_PASSWORD: pgpwd4habr
+      DB_HOST: postgres
+    ports:
+      - "8080:8080"
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy

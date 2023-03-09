@@ -15,13 +15,15 @@ module.exports = (sequelize, DataTypes) => {
   }
   Colors.init({
     color: DataTypes.STRING,
-    nameColorEng: DataTypes.STRING,
-    DMC: DataTypes.STRING,
-    nameColorRu: DataTypes.STRING
+    name_color_eng: DataTypes.STRING,
+    dmc: DataTypes.STRING,
+    name_color_ru: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Colors',
-    timestamps: false
+    modelName: 'colors',
+    tableName: 'colors',
+    timestamps: false,
+    underscored: true,
   });
   return Colors;
 };

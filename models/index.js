@@ -46,11 +46,11 @@ db.user_color = require("./userColor.model.js")(sequelize, Sequelize);
 
 db.users.belongsToMany(db.colors, {
   through: db.user_color,
-  foreignKey: "UserId",
+  foreignKey: "user_id",
 })
 db.colors.belongsToMany(db.users, {
   through: db.user_color,
-  foreignKey: "ColorId",
+  foreignKey: "color_id",
 })
 
 module.exports = db;
